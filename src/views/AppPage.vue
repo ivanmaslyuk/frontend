@@ -18,7 +18,7 @@ export default {
     return {
       appInfo: {},
       sessionId: window.sessionId,
-      app: {}
+      app: null
     };
   },
   mounted() {
@@ -50,6 +50,7 @@ export default {
     },
 
     async launchApp() {
+      window.syncService.addMessageListener("app-page", this.handleMessage);
       window.syncService.sendMessage({
         source: "device",
         event: "app_launched",
@@ -61,14 +62,44 @@ export default {
     },
 
     sendMessage(event, payload) {
-      window.syncService.sendMessage({
-        source: this.appInfo.systemName,
-        event,
-        payload: payload || {}
-      });
+      if (this.app) {
+        window.syncService.sendMessage({
+          source: this.appInfo.systemName,
+          event,
+          payload: payload || {}
+        });
+      } else {
+        console.error("No app is launched. Can't send message.");
+      }
+    },
+
+    handleMessage(message) {
+      if (message.source === "system") {
+        const payload = message.payload;
+        if (message.event === "device_disconnected" && this.app) {
+          return this.app.deviceDisconnected(
+            payload.deviceType,
+            payload.deviceName
+          );
+        }
+        if (message.event === "device_connected" && this.app) {
+          return this.app.deviceConnected(
+            payload.deviceType,
+            payload.deviceName
+          );
+        }
+      }
+      if (this.app && message.source === this.appInfo.systemName) {
+        return this.app.handleEvent(message.event, message.payload);
+      }
     }
   },
+
   beforeRouteLeave(to, from, next) {
+    window.syncService.removeMessageListener("app-page");
+    if (this.app) {
+      this.app.appClosed();
+    }
     window.syncService.sendMessage({
       source: "device",
       event: "current_app_closed"
