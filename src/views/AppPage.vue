@@ -58,6 +58,7 @@ export default {
           name: this.appInfo.systemName
         }
       });
+      this.app.sendMessage = this.sendMessage;
       this.app.appLaunched();
     },
 
