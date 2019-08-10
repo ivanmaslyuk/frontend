@@ -24,4 +24,7 @@ new Vue({
   router,
   store,
   render: h => h(App)
+  // created() {
+  //   this.$syncService = new SyncSerciceFrontend("localhost", 3001);
+  // }
 }).$mount("#app");

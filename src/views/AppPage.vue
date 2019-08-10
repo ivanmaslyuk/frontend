@@ -9,7 +9,6 @@
 
 <script>
 import axios from "axios";
-import { setTimeout } from "timers";
 
 export default {
   name: "app-page",
@@ -49,7 +48,7 @@ export default {
       }
     },
 
-    async launchApp() {
+    launchApp() {
       window.syncService.addMessageListener("app-page", this.handleMessage);
       window.syncService.sendMessage({
         source: "device",

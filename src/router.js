@@ -11,7 +11,7 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Home,
+      component: Home
     },
     {
       path: "/app/:id",
@@ -23,6 +23,11 @@ export default new Router({
       path: "/login",
       name: "login",
       component: Login
+    },
+    {
+      path: "/mobile",
+      name: "mobile",
+      component: undefined
     }
   ]
 });
