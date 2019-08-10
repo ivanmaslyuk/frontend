@@ -1,5 +1,9 @@
 export default {
-  data: ["systemName"],
+  data() {
+    return {
+      systemName: undefined
+    }
+  },
 
   mounted() {
     window.syncService.addMessageListener("admin-app", this.handleMessage);
