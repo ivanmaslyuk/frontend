@@ -10,6 +10,8 @@
 <script>
 import axios from "axios";
 import TestAppAdmin from "../apps/TestApp/TestAppAdmin";
+import router from "../router";
+import { mapState } from "vuex";
 
 export default {
   name: "app-page",
@@ -17,11 +19,13 @@ export default {
   components: { TestAppAdmin },
   data() {
     return {
-      appInfo: {},
-      sessionId: window.sessionId
+      appInfo: {}
     };
   },
   async mounted() {
+    if (!this.sessionId) {
+      router.replace({ name: "home" });
+    }
     try {
       const basePath = this.backendBasePath();
       const response = await axios.get(`${basePath}/api/apps/${this.id}`);
@@ -40,6 +44,7 @@ export default {
       event: "current_app_closed"
     });
     next();
-  }
+  },
+  computed: mapState(["sessionId"])
 };
 </script>

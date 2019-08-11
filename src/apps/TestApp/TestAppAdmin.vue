@@ -27,9 +27,7 @@ export default {
     sendBlue() {
       this.sendMessage("blue");
     },
-    handleEvent(event, payload) {
-      console.log(event);
-    },
+    handleEvent(event, payload) {},
     deviceConnected(deviceType, deviceName) {},
     deviceDisconnected(deviceType, deviceName) {}
   },

@@ -8,20 +8,13 @@
 </template>
 
 <script>
-import router from "./router";
-
-export default {
-  mounted() {
-    if (localStorage.accessToken) {
-      router.push({ name: "home" });
-    } else {
-      router.push({ name: "login" });
-    }
-  }
-};
+export default {};
 </script>
 
 <style>
+body {
+  margin: 0;
+}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

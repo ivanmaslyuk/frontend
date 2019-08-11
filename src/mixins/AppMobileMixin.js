@@ -6,22 +6,15 @@ export default {
   },
 
   mounted() {
-    this.$syncService.addMessageListener("admin-app", this.handleMessage);
+    this.$syncService.addMessageListener("mobile-app", this.handleMessage);
     if (!this.systemName) {
-      return console.error("systemName is not defined");
+      console.error("systemName is not defined");
     }
-    this.$syncService.sendMessage({
-      source: "device",
-      event: "app_launched",
-      payload: {
-        name: this.systemName
-      }
-    });
   },
 
   methods: {
     sendMessage(event, payload) {
-      this.$syncService.sendMessage({
+      window.syncService.sendMessage({
         source: this.systemName,
         event,
         payload

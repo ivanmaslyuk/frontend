@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import SyncSerciceFrontend from "../js/SyncServiceFrontend";
 
 Vue.config.productionTip = false;
 
@@ -17,6 +18,14 @@ Vue.mixin({
     backendBasePath() {
       return `${this.backendScheme}://${this.backendHost}`;
     }
+  },
+  computed: {
+    $syncService() {
+      if (!window.syncService) {
+        window.syncService = new SyncSerciceFrontend("localhost", 3001);
+      }
+      return window.syncService;
+    }
   }
 });
 
@@ -24,7 +33,4 @@ new Vue({
   router,
   store,
   render: h => h(App)
-  // created() {
-  //   this.$syncService = new SyncSerciceFrontend("localhost", 3001);
-  // }
 }).$mount("#app");

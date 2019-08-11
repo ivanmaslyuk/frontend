@@ -4,7 +4,13 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
+  state: {
+    sessionId: null
+  },
+  mutations: {
+    setSessionId(state, val) {
+      state.sessionId = val;
+    }
+  },
   actions: {}
 });
