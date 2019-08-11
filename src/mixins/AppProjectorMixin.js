@@ -6,7 +6,7 @@ export default {
   },
 
   mounted() {
-    this.$syncService.addMessageListener("mobile-app", this.handleMessage);
+    this.$syncService.addMessageListener("projector-app", this.handleMessage);
     if (!this.systemName) {
       console.error("systemName is not defined");
     }

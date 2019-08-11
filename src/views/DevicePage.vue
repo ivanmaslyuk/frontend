@@ -11,17 +11,22 @@
     <div v-if="loading">Загрузка</div>
     <div v-if="sessionTerminated">Сессия прервана</div>
     <div v-if="errorAccured">Ошибка</div>
-    <div v-if="currentApp">
+    <div v-if="currentApp && !isProjector">
       <TestAppMobile v-if="currentApp === 'test_app'" />
+    </div>
+    <div v-if="currentApp && isProjector">
+      <TestAppProjector v-if="currentApp === 'test_app'" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "mobile-page",
+  name: "device-page",
+  props: { isProjector: false },
   components: {
-    TestAppMobile: async () => import("../apps/TestApp/TestAppMobile")
+    TestAppMobile: () => import("../apps/TestApp/TestAppMobile"),
+    TestAppProjector: () => import("../apps/TestApp/TestAppProjector")
   },
   data() {
     return {

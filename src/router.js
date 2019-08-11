@@ -24,7 +24,13 @@ export default new Router({
     {
       path: "/mobile",
       name: "mobile",
-      component: () => import("./views/Mobile")
+      component: () => import("./views/DevicePage")
+    },
+    {
+      path: "/projector",
+      name: "projector",
+      props: { isProjector: true },
+      component: () => import("./views/DevicePage")
     }
   ]
 });

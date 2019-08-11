@@ -20,15 +20,17 @@ export default {
   },
 
   async mounted() {
-    if (localStorage.accessToken) {
-      this.$syncService.connect("admin_console", (payload, err) => {
-        if (err) {
-          return console.log(err);
-        }
-        this.setSessionId(payload.sessionId);
-      });
-    } else {
-      return router.replace({ name: "login" });
+    if (!this.sessionId) {
+      if (localStorage.accessToken) {
+        this.$syncService.connect("admin_console", (payload, err) => {
+          if (err) {
+            return console.log(err);
+          }
+          this.setSessionId(payload.sessionId);
+        });
+      } else {
+        return router.replace({ name: "login" });
+      }
     }
 
     try {

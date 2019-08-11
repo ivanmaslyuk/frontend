@@ -3,20 +3,22 @@
     <p>Сессия: {{ sessionId }}</p>
     <router-link to="/">Назад</router-link>
     <h1>{{ appInfo.humanName }}</h1>
-    <TestAppAdmin />
+    <TestAppAdmin v-if="appInfo.systemName === 'test_app'" />
+    <div v-else>
+      <h3>Не удалось запустить приложение.</h3>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import TestAppAdmin from "../apps/TestApp/TestAppAdmin";
 import router from "../router";
 import { mapState } from "vuex";
 
 export default {
   name: "app-page",
   props: ["id"],
-  components: { TestAppAdmin },
+  components: { TestAppAdmin: () => import("../apps/TestApp/TestAppAdmin") },
   data() {
     return {
       appInfo: {}
@@ -35,11 +37,11 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    window.syncService.removeMessageListener("app-page");
+    this.$syncService.removeMessageListener("app-page");
     if (this.app) {
       this.app.appClosed();
     }
-    window.syncService.sendMessage({
+    this.$syncService.sendMessage({
       source: "device",
       event: "current_app_closed"
     });
