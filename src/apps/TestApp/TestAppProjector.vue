@@ -6,11 +6,11 @@
 </template>
 
 <script>
-import AppAdminMixin from "../../mixins/AppAdminMixin";
+import AppProjectorMixin from "../../mixins/AppProjectorMixin";
 
 export default {
-  name: "test-app-mobile",
-  mixins: [AppAdminMixin],
+  name: "test-app-projector",
+  mixins: [AppProjectorMixin],
   data() {
     return {
       systemName: "test_app",
