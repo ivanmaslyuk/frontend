@@ -9,31 +9,40 @@
 
 <script>
 import axios from "axios";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "home",
   data() {
     return {
-      apps: [],
-      sessionId: window.sessionId
+      apps: []
     };
   },
-  mounted() {
-    axios
-      .get("http://127.0.0.1:8080/api/apps")
-      .then(response => {
-        this.apps = response.data;
-      })
-      .catch(err => console.log(err));
 
-    if (!window.syncService) {
-      window.syncService = new SyncServiceFrontend("localhost", 3001);
-      window.syncService.connect((payload, err) => {
-        window.sessionId = payload.sessionId;
-        this.sessionId = payload.sessionId;
-      });
-      window.syncService.onMessage = console.log;
+  async mounted() {
+    if (!this.sessionId) {
+      if (localStorage.accessToken) {
+        this.$syncService.connect("admin_console", (payload, err) => {
+          if (err) {
+            return console.log(err);
+          }
+          this.setSessionId(payload.sessionId);
+        });
+      } else {
+        return router.replace({ name: "login" });
+      }
     }
-  }
+
+    try {
+      const basePath = this.backendBasePath();
+      const response = await axios.get(`${basePath}/api/apps`);
+      this.apps = response.data;
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+  computed: mapState(["sessionId"]),
+  methods: mapMutations(["setSessionId"])
 };
 </script>

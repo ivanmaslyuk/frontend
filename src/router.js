@@ -1,8 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
-import AppPage from "./views/AppPage.vue";
-import Login from "./views/Login.vue";
 
 Vue.use(Router);
 
@@ -11,18 +8,29 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Home,
+      component: () => import("./views/Home.vue")
     },
     {
       path: "/app/:id",
       name: "app-page",
-      component: AppPage,
+      component: () => import("./views/AppPage.vue"),
       props: true
     },
     {
       path: "/login",
       name: "login",
-      component: Login
+      component: () => import("./views/Login.vue")
+    },
+    {
+      path: "/mobile",
+      name: "mobile",
+      component: () => import("./views/DevicePage")
+    },
+    {
+      path: "/projector",
+      name: "projector",
+      props: { isProjector: true },
+      component: () => import("./views/DevicePage")
     }
   ]
 });
