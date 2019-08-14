@@ -9,7 +9,7 @@ Vue.config.productionTip = false;
 Vue.mixin({
   data() {
     return {
-      backendHost: "localhost:8080",
+      backendHost: "192.168.2.45:8080",
       wsPort: 3001,
       backendScheme: "http"
     };
@@ -22,7 +22,7 @@ Vue.mixin({
   computed: {
     $syncService() {
       if (!window.syncService) {
-        window.syncService = new SyncSerciceFrontend("localhost", 3001);
+        window.syncService = new SyncSerciceFrontend("192.168.2.45", 3001);
       }
       return window.syncService;
     }

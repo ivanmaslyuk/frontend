@@ -10,6 +10,7 @@
 <script>
 import axios from "axios";
 import { mapState, mapMutations } from "vuex";
+import router from "../router";
 
 export default {
   name: "home",
