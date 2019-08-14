@@ -152,30 +152,13 @@ export default {
   font-size: 22px;
 }
 .sid-input {
-  /* -webkit-appearance: textfield; */
   width: 90vw;
-  padding: 26px !important;
-  /* border: none; */
-  /* border: 2px solid #7f7f7f; */
-  /* border-radius: 4px; */
-}
-.sid-input:focus {
-  /* border-color: #2176ff; */
+  height: 56px;
 }
 .connect-btn {
   margin-top: 20px;
-  /* border: none; */
-  /* border-radius: 4px; */
-
   width: 90vw;
   padding: 8px;
-  /* text-transform: uppercase; */
-  /* font-size: 14px; */
-  /* background-color: #2176ff; */
-  /* color: white; */
-}
-.connect-btn:disabled {
-  /* background-color: #e0e0e0; */
 }
 .help-link {
   margin-top: 35px;
