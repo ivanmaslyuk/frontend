@@ -1,14 +1,24 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Приложения</router-link>
-    </div>-->
-    <router-view />
+    <Header v-if="notOnMobilePage" class="shadow-sm" />
+    <router-view v-bind:class="{container: notOnMobilePage}" />
   </div>
 </template>
 
 <script>
-export default {};
+import Header from "./components/Header";
+
+export default {
+  components: { Header },
+  computed: {
+    notOnMobilePage() {
+      return (
+        !["mobile", "projector"].includes(this.$route.name) &&
+        this.$route.name != null
+      );
+    }
+  }
+};
 </script>
 
 <style>

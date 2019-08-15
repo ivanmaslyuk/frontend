@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <p>Сессия: {{ sessionId }}</p>
     <div v-for="app in apps" v-bind:key="app._id">
       <a :href="'#/app/' + app._id">{{ app.humanName }}</a>
     </div>

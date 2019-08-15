@@ -1,12 +1,8 @@
 <template>
   <div class="app-page">
-    <p>Сессия: {{ sessionId }}</p>
     <router-link to="/">Назад</router-link>
     <h1>{{ appInfo.humanName }}</h1>
     <TestAppAdmin v-if="appInfo.systemName === 'test_app'" />
-    <div v-else>
-      <h3>Не удалось запустить приложение.</h3>
-    </div>
   </div>
 </template>
 
