@@ -1,8 +1,8 @@
 <template>
   <div>
-    <button v-on:click="sendRed">Красный</button>
-    <button v-on:click="sendGreen">Зеленый</button>
-    <button v-on:click="sendBlue">Синий</button>
+    <button class="btn btn-danger" v-on:click="sendRed">Красный</button>
+    <button class="btn btn-success ml-1" v-on:click="sendGreen">Зеленый</button>
+    <button class="btn btn-primary ml-1" v-on:click="sendBlue">Синий</button>
   </div>
 </template>
 

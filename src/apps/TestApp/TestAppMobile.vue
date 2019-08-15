@@ -1,8 +1,10 @@
 <template>
-  <div
-    class="bkg"
-    v-bind:class="{red: color === 'red', green: color === 'green', blue: color === 'blue'}"
-  ></div>
+  <div class="bkg d-flex justify-content-center align-items-center">
+    <span
+      class="text"
+      v-bind:class="{red: color === 'red', green: color === 'green', blue: color === 'blue'}"
+    >ТЕСТ</span>
+  </div>
 </template>
 
 <script>
@@ -34,14 +36,19 @@ export default {
   margin: 0;
   width: 100vw;
   height: 100vh;
+  background-color: black;
+}
+.text {
+  font-size: 20vw;
+  font-weight: bolder;
 }
 .red {
-  background-color: red;
+  color: red;
 }
 .green {
-  background-color: green;
+  color: green;
 }
 .blue {
-  background-color: blue;
+  color: blue;
 }
 </style>
