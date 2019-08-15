@@ -3,6 +3,10 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import SyncSerciceFrontend from "../js/SyncServiceFrontend";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+import { ToastPlugin } from "bootstrap-vue";
+Vue.use(ToastPlugin);
 
 Vue.config.productionTip = false;
 

@@ -28,6 +28,7 @@ export default {
           }
           this.setSessionId(payload.sessionId);
         });
+        this.$syncService.addMessageListener("home-page", this.handleMessage);
       } else {
         return router.replace({ name: "login" });
       }
@@ -43,6 +44,40 @@ export default {
   },
 
   computed: mapState(["sessionId"]),
-  methods: mapMutations(["setSessionId"])
+  methods: {
+    showToast(title, message) {
+      this.$bvToast.toast(message, {
+        title,
+        autoHideDelay: 5000,
+        appendToast: false
+      });
+    },
+
+    handleMessage(message) {
+      if (message.source !== "system") {
+        return;
+      }
+      if (message.event === "device_connected") {
+        const deviceType = message.payload.deviceType;
+        const deviceName = message.payload.deviceName;
+        const toastMessage =
+          deviceType === "mobile"
+            ? `Мобильное устройство ${deviceName} подключено.`
+            : "Проектор подключен.";
+        this.showToast("Устройство подключено", toastMessage);
+      }
+      if (message.event === "device_disconnected") {
+        const deviceType = message.payload.deviceType;
+        const deviceName = message.payload.deviceName;
+        const toastMessage =
+          deviceType === "mobile"
+            ? `Мобильное устройство ${deviceName} отключено.`
+            : "Проектор отключен.";
+        this.showToast("Устройство отключено", toastMessage);
+      }
+    },
+
+    ...mapMutations(["setSessionId"])
+  }
 };
 </script>
