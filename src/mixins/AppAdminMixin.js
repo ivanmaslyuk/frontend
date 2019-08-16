@@ -6,10 +6,13 @@ export default {
   },
 
   mounted() {
-    this.$syncService.addMessageListener("admin-app", this.handleMessage);
     if (!this.systemName) {
-      return console.error("systemName is not defined");
+      return console.error("systemName is not defined in app.");
     }
+    this.$syncService.addMessageListener(
+      `${this.systemName}-admin`,
+      this.handleMessage
+    );
     this.$syncService.sendMessage({
       source: "device",
       event: "app_launched",
@@ -17,6 +20,12 @@ export default {
         name: this.systemName
       }
     });
+  },
+
+  destroyed() {
+    if (this.systemName) {
+      this.$syncService.removeMessageListener(`${this.systemName}-admin`);
+    }
   },
 
   methods: {

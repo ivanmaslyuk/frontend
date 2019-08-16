@@ -6,9 +6,18 @@ export default {
   },
 
   mounted() {
-    this.$syncService.addMessageListener("projector-app", this.handleMessage);
     if (!this.systemName) {
-      console.error("systemName is not defined");
+      return console.error("systemName is not defined in app.");
+    }
+    this.$syncService.addMessageListener(
+      `${this.systemName}-projector`,
+      this.handleMessage
+    );
+  },
+
+  destroyed() {
+    if (this.systemName) {
+      this.$syncService.removeMessageListener(`${this.systemName}-projector`);
     }
   },
 
