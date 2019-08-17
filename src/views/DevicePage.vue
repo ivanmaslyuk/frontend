@@ -1,12 +1,12 @@
 <template>
   <div class="root d-flex justify-content-center align-items-center">
-    <div class="header" v-if="!currentApp">
+    <div class="header" v-if="!currentApp ||  sessionTerminated || errorAccured">
       <span class="brand">EventStore</span>
     </div>
 
     <div
       v-bind:class="{'align-self-start': !isProjector, 'form-top-margin': !isProjector}"
-      v-if="!connected"
+      v-if="!connected && !sessionTerminated && !errorAccured && !loading"
     >
       <div class="subtitle" v-if="!isProjector">Подключение устройства</div>
       <div class="subtitle" v-if="isProjector">Подключение проектора</div>
@@ -25,16 +25,16 @@
       </div>
     </div>
 
-    <div v-if="connected && !currentApp">
+    <div v-if="connected && !currentApp && !sessionTerminated && !errorAccured && !loading">
       <span v-if="!isProjector" class="title">{{deviceName}} подключено</span>
       <span v-if="isProjector" class="title">Проектор подключен</span>
       <br />
       <span class="secondary-text">Выберите приложение в панели управления, чтобы начать.</span>
     </div>
 
-    <div v-if="loading">Загрузка</div>
+    <div v-if="loading && !errorAccured && !sessionTerminated">Загрузка</div>
 
-    <div v-if="sessionTerminated">
+    <div v-if="sessionTerminated && !errorAccured">
       <span class="title">Сессия закрыта</span>
       <br />
       <span
@@ -48,11 +48,11 @@
       <span class="secondary-text">Не удается установить соединение с сервером.</span>
     </div>
 
-    <div v-if="currentApp && !isProjector">
+    <div v-if="currentApp && !isProjector && !sessionTerminated  && !errorAccured && !loading">
       <TestAppMobile v-if="currentApp === 'test_app'" />
     </div>
 
-    <div v-if="currentApp && isProjector">
+    <div v-if="currentApp && isProjector && !sessionTerminated && !errorAccured && !loading">
       <TestAppProjector v-if="currentApp === 'test_app'" />
     </div>
   </div>
@@ -80,6 +80,8 @@ export default {
   },
   mounted() {
     this.$syncService.addMessageListener("device-page", this.handleMessage);
+    this.$syncService.onSessionTerminated = () =>
+      (this.sessionTerminated = true);
   },
   methods: {
     connect(e) {
@@ -100,6 +102,7 @@ export default {
       e.preventDefault();
     },
     handleMessage(message) {
+      console.log(message.event);
       if (message.source === "system") {
         if (message.event === "app_launched") {
           this.currentApp = message.payload.name;
@@ -107,10 +110,6 @@ export default {
 
         if (message.event === "current_app_closed") {
           this.currentApp = null;
-        }
-
-        if (message.event === "session_terminated") {
-          this.sessionTerminated = true;
         }
       }
     }

@@ -40,17 +40,17 @@ export default {
     handleMessage(message) {
       if (message.source === "system") {
         const payload = message.payload;
-        if (message.event === "device_disconnected") {
+        if (message.event === "device_disconnected" && this.deviceDisconnected) {
           return this.deviceDisconnected(
             payload.deviceType,
             payload.deviceName
           );
         }
-        if (message.event === "device_connected") {
+        if (message.event === "device_connected" && this.deviceConnected) {
           return this.deviceConnected(payload.deviceType, payload.deviceName);
         }
       }
-      if (message.source === this.systemName) {
+      if (message.source === this.systemName && this.handleEvent) {
         return this.handleEvent(message.event, message.payload);
       }
     }
