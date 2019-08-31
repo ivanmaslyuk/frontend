@@ -13,13 +13,6 @@ export default {
       `${this.systemName}-admin`,
       this.handleMessage
     );
-    this.$syncService.sendMessage({
-      source: "device",
-      event: "app_launched",
-      payload: {
-        name: this.systemName
-      }
-    });
   },
 
   destroyed() {
@@ -29,6 +22,20 @@ export default {
   },
 
   methods: {
+    launch(args) {
+      if (!this.systemName) {
+        return console.error("systemName is not defined in app.");
+      }
+      this.$syncService.sendMessage({
+        source: "device",
+        event: "app_launched",
+        payload: {
+          name: this.systemName,
+          args
+        }
+      });
+    },
+
     sendMessage(event, payload) {
       this.$syncService.sendMessage({
         source: this.systemName,

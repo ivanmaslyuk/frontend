@@ -3,6 +3,7 @@
     <router-link to="/">Назад</router-link>
     <h1>{{ appInfo.humanName }}</h1>
     <TestAppAdmin v-if="appInfo.systemName === 'test_app'" />
+    <LieDetectorAdmin v-if="appInfo.systemName === 'lie_detector'" />
   </div>
 </template>
 
@@ -14,7 +15,10 @@ import { mapState } from "vuex";
 export default {
   name: "app-page",
   props: ["id"],
-  components: { TestAppAdmin: () => import("../apps/TestApp/TestAppAdmin") },
+  components: {
+    TestAppAdmin: () => import("../apps/TestApp/TestAppAdmin"),
+    LieDetectorAdmin: () => import("../apps/LieDetector/LieDetectorAdmin")
+  },
   data() {
     return {
       appInfo: {}
