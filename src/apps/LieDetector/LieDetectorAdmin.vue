@@ -114,7 +114,7 @@ export default {
       heartRate: 60,
       currentQuestion: 0,
       stage: "ADDING_QUESTIONS",
-      questions: [""],
+      questions: JSON.parse(localStorage.questions || '[""]'),
       fingerPlaced: false
     };
   },
@@ -125,8 +125,12 @@ export default {
 
   methods: {
     handleEvent(event, payload) {
-      // TODO: сделать чтобы кнопки были неактивны и показывалось сообщение когда убрали палец
-      console.log(event);
+      if (event === "player_placed_finger") {
+        this.fingerPlaced = true;
+      }
+      if (event === "player_removed_finger") {
+        this.fingerPlaced = false;
+      }
     },
     deviceConnected(deviceType, deviceName) {},
     deviceDisconnected(deviceType, deviceName) {},
@@ -183,6 +187,11 @@ export default {
     heartRate(newVal, oldVal) {
       this.heartbeatDisplay.setBPM(newVal);
       this.sendMessage("new_pulse_value", { value: newVal });
+    },
+
+    questions(newVal, oldVal) {
+      console.log(newVal);
+      localStorage.questions = JSON.stringify(newVal);
     }
   }
 };

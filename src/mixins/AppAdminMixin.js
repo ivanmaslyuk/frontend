@@ -11,7 +11,7 @@ export default {
     }
     this.$syncService.addMessageListener(
       `${this.systemName}-admin`,
-      this.handleMessage
+      this._handleMessage
     );
   },
 
@@ -34,6 +34,12 @@ export default {
           args
         }
       });
+    },
+
+    _handleMessage(message) {
+      if (message.source === this.systemName) {
+        this.handleMessage(message.event, message.payload);
+      }
     },
 
     sendMessage(event, payload) {

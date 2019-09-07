@@ -48,11 +48,18 @@
       <span class="secondary-text">Не удается установить соединение с сервером.</span>
     </div>
 
-    <div v-if="currentApp && !isProjector && !sessionTerminated  && !errorAccured && !loading">
+    <div
+      v-if="currentApp && !isProjector && !sessionTerminated  && !errorAccured && !loading"
+      class="wrapper"
+    >
       <TestAppMobile v-if="currentApp === 'test_app'" />
+      <LieDetectorMobile v-if="currentApp === 'lie_detector'" />
     </div>
 
-    <div v-if="currentApp && isProjector && !sessionTerminated && !errorAccured && !loading">
+    <div
+      v-if="currentApp && isProjector && !sessionTerminated && !errorAccured && !loading"
+      class="wrapper"
+    >
       <TestAppProjector v-if="currentApp === 'test_app'" />
     </div>
   </div>
@@ -64,7 +71,9 @@ export default {
   props: { isProjector: false },
   components: {
     TestAppMobile: () => import("../apps/TestApp/TestAppMobile"),
-    TestAppProjector: () => import("../apps/TestApp/TestAppProjector")
+    TestAppProjector: () => import("../apps/TestApp/TestAppProjector"),
+
+    LieDetectorMobile: () => import("../apps/LieDetector/LieDetectorMobile")
   },
   data() {
     return {
@@ -176,5 +185,10 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+.wrapper {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
 }
 </style>

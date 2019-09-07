@@ -16,6 +16,9 @@ export default {
       systemName: "test_app"
     };
   },
+  mounted() {
+    this.launch();
+  },
   mixins: [AppAdminMixin],
   methods: {
     sendRed() {
