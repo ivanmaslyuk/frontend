@@ -61,6 +61,7 @@
       class="wrapper"
     >
       <TestAppProjector v-if="currentApp === 'test_app'" />
+      <LieDetectorProjector v-if="currentApp === 'lie_detector'" />
     </div>
   </div>
 </template>
@@ -73,7 +74,9 @@ export default {
     TestAppMobile: () => import("../apps/TestApp/TestAppMobile"),
     TestAppProjector: () => import("../apps/TestApp/TestAppProjector"),
 
-    LieDetectorMobile: () => import("../apps/LieDetector/LieDetectorMobile")
+    LieDetectorMobile: () => import("../apps/LieDetector/LieDetectorMobile"),
+    LieDetectorProjector: () =>
+      import("../apps/LieDetector/LieDetectorProjector")
   },
   data() {
     return {
@@ -111,7 +114,6 @@ export default {
       e.preventDefault();
     },
     handleMessage(message) {
-      console.log(message.event);
       if (message.source === "system") {
         if (message.event === "app_launched") {
           this.currentApp = message.payload.name;

@@ -9,6 +9,7 @@
         <img class="fingerprint" v-if="!isFingerPlaced" src="./img/fingerprint-red.svg" />
       </div>
       <div class="alert-wrapper"></div>
+      <input type="checkbox" @click="change" />
     </div>
     <div v-if="questionsEnded">
       <span class="alert" style="padding: 0">ТЕСТИРОВАНИЕ ОКОНЧЕНО</span>
@@ -44,10 +45,16 @@ export default {
     fingerRemoved() {
       this.sendMessage("player_removed_finger");
       this.isFingerPlaced = false;
+    },
+
+    change() {
+      if (this.isFingerPlaced) {
+        this.fingerRemoved();
+      } else {
+        this.fingerPlaced();
+      }
     }
-  },
-  deviceConnected(deviceType, deviceName) {},
-  deviceDisconnected(deviceType, deviceName) {}
+  }
 };
 </script>
 

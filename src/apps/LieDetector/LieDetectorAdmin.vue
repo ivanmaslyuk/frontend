@@ -190,7 +190,6 @@ export default {
     },
 
     questions(newVal, oldVal) {
-      console.log(newVal);
       localStorage.questions = JSON.stringify(newVal);
     }
   }
