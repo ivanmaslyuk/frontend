@@ -69,12 +69,32 @@
           <div class="d-flex justify-content-between">
             <h2 style="display: inline-block">«{{ questions[currentQuestion] }}»</h2>
             <div>
-              <button
-                class="btn btn-success mr-2"
-                @click="truthSelected()"
-                :disabled="!fingerPlaced"
-              >Правда</button>
-              <button class="btn btn-danger" @click="lieSelected()" :disabled="!fingerPlaced">Ложь</button>
+              <div class="btn-group answer-choices mr-2">
+                <span>«Да»</span>
+                <button
+                  class="btn btn-outline-success"
+                  @click="truthSelected()"
+                  :disabled="!fingerPlaced"
+                >Правда</button>
+                <button
+                  class="btn btn-outline-danger"
+                  @click="lieSelected()"
+                  :disabled="!fingerPlaced"
+                >Ложь</button>
+              </div>
+              <div class="btn-group answer-choices">
+                <span>«Нет»</span>
+                <button
+                  class="btn btn-outline-success"
+                  @click="truthSelected()"
+                  :disabled="!fingerPlaced"
+                >Правда</button>
+                <button
+                  class="btn btn-outline-danger"
+                  @click="lieSelected()"
+                  :disabled="!fingerPlaced"
+                >Ложь</button>
+              </div>
             </div>
           </div>
         </div>
@@ -88,10 +108,7 @@
           class="d-flex flex-column align-items-center justify-content-center"
         >
           <h3 class="mb-5">Вопросы закончились</h3>
-          <button
-            class="btn btn-primary"
-            @click="stage = 'SHOWING_ANSWERS'"
-          >Начать показ результатов</button>
+          <button class="btn btn-primary" @click="showNextResult">Начать показ результатов</button>
         </div>
       </div>
     </div>
@@ -115,7 +132,7 @@ export default {
       currentQuestion: 0,
       stage: "ADDING_QUESTIONS",
       questions: JSON.parse(localStorage.questions || '[""]'),
-      fingerPlaced: false
+      fingerPlaced: true
     };
   },
 
@@ -138,6 +155,11 @@ export default {
     raiseHeartRate() {
       // TODO: сделать чтобы прибавлялось от 7 до 10
       this.heartRate += parseInt(Math.random() * 10);
+    },
+
+    showNextResult() {
+      this.stage = "SHOWING_ANSWERS";
+      this.sendMessage("answer_skipped");
     },
 
     lowerHeartRate() {
@@ -236,5 +258,18 @@ export default {
 
 .seethrough {
   opacity: 0;
+}
+.answer-choices {
+  border: solid 1px #eee;
+  border-radius: 4px;
+}
+.answer-choices > span {
+  margin: 0 10px;
+  align-self: center;
+}
+.btn-group .btn:not(:hover) {
+  border-color: #eee;
+  border-top-color: white;
+  border-bottom-color: white;
 }
 </style>

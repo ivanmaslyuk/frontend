@@ -61,7 +61,7 @@
       class="wrapper"
     >
       <TestAppProjector v-if="currentApp === 'test_app'" />
-      <LieDetectorProjector v-if="currentApp === 'lie_detector'" />
+      <LieDetectorProjector :args="args" v-if="currentApp === 'lie_detector'" />
     </div>
   </div>
 </template>
@@ -87,7 +87,8 @@ export default {
       sessionId: null,
       invalidSessionIdEntered: false,
       currentApp: null,
-      deviceName: null
+      deviceName: null,
+      args: {}
     };
   },
   mounted() {
@@ -117,6 +118,9 @@ export default {
       if (message.source === "system") {
         if (message.event === "app_launched") {
           this.currentApp = message.payload.name;
+          if (message.payload) {
+            this.args = message.payload.args || {};
+          }
         }
 
         if (message.event === "current_app_closed") {
