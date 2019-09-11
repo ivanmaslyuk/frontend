@@ -50,3 +50,9 @@ export default {
   computed: mapState(["sessionId"])
 };
 </script>
+
+<style scoped>
+.app-page {
+  touch-action: manipulation;
+}
+</style>
