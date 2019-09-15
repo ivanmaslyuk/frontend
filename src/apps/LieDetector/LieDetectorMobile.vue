@@ -32,6 +32,7 @@ export default {
   },
   methods: {
     handleEvent(event, payload) {
+      console.log(event);
       if (event === "questions_ended") {
         this.questionsEnded = true;
       }
@@ -71,7 +72,6 @@ body {
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none;
 }
 .fingerprint {
   width: 150px;

@@ -73,12 +73,12 @@
                 <span>«Да»</span>
                 <button
                   class="btn btn-outline-success"
-                  @click="truthSelected()"
+                  @click="answerSelected(true, true)"
                   :disabled="!fingerPlaced"
                 >Правда</button>
                 <button
                   class="btn btn-outline-danger"
-                  @click="lieSelected()"
+                  @click="answerSelected(true, false)"
                   :disabled="!fingerPlaced"
                 >Ложь</button>
               </div>
@@ -86,12 +86,12 @@
                 <span>«Нет»</span>
                 <button
                   class="btn btn-outline-success"
-                  @click="truthSelected()"
+                  @click="answerSelected(false, true)"
                   :disabled="!fingerPlaced"
                 >Правда</button>
                 <button
                   class="btn btn-outline-danger"
-                  @click="lieSelected()"
+                  @click="answerSelected(false, false)"
                   :disabled="!fingerPlaced"
                 >Ложь</button>
               </div>
@@ -108,12 +108,31 @@
           class="d-flex flex-column align-items-center justify-content-center"
         >
           <h3 class="mb-5">Вопросы закончились</h3>
-          <button class="btn btn-primary" @click="showNextResult">Начать показ результатов</button>
+          <button class="btn btn-primary" @click="startedShowingResults">Начать показ результатов</button>
         </div>
       </div>
     </div>
 
-    <div v-if="stage === 'SHOWING_ANSWERS'">ответы</div>
+    <div
+      v-if="stage === 'SHOWING_ANSWERS'"
+      class="d-flex flex-column align-items-center justify-content-center"
+    >
+      <h2>«{{ questions[currentAnswer] }}»</h2>
+      <h3>Ответ: «{{ answers[currentAnswer].answer ? 'Да' : 'Нет' }}»</h3>
+      <h3>{{ answers[currentAnswer].truth ? 'Правда' : 'Ложь' }}</h3>
+      <button
+        class="btn btn-primary"
+        @click="showNextResult"
+      >{{ showingLastResult ? 'Завершить' : 'Следующий ответ' }}</button>
+    </div>
+
+    <div
+      class="d-flex align-content-center justify-content-center"
+      v-if="stage === 'GAME_ENDED'"
+      style="height: 400px"
+    >
+      <h4>Конец игры</h4>
+    </div>
   </div>
 </template>
 
@@ -130,9 +149,11 @@ export default {
       systemName: "lie_detector",
       heartRate: 60,
       currentQuestion: 0,
+      currentAnswer: 0,
       stage: "ADDING_QUESTIONS",
-      questions: JSON.parse(localStorage.questions || '[""]'),
-      fingerPlaced: true
+      questions: JSON.parse(localStorage.lieDetectorQuestions || '[""]'),
+      fingerPlaced: false,
+      answers: []
     };
   },
 
@@ -149,21 +170,29 @@ export default {
         this.fingerPlaced = false;
       }
     },
-    deviceConnected(deviceType, deviceName) {},
-    deviceDisconnected(deviceType, deviceName) {},
 
     raiseHeartRate() {
       // TODO: сделать чтобы прибавлялось от 7 до 10
       this.heartRate += parseInt(Math.random() * 10);
     },
 
+    lowerHeartRate() {
+      this.heartRate -= parseInt(Math.random() * 10);
+    },
+
     showNextResult() {
-      this.stage = "SHOWING_ANSWERS";
+      if (this.currentAnswer + 1 < this.questions.length) {
+        this.currentAnswer += 1;
+      } else {
+        this.stage = "GAME_ENDED";
+      }
+
       this.sendMessage("answer_skipped");
     },
 
-    lowerHeartRate() {
-      this.heartRate -= parseInt(Math.random() * 10);
+    startedShowingResults() {
+      this.sendMessage("started_showing_results");
+      this.stage = "SHOWING_ANSWERS";
     },
 
     initHeartbeatDisplay() {
@@ -175,22 +204,19 @@ export default {
       this.heartbeatDisplay.streamTo(canvas);
     },
 
-    questionSkipped() {
+    answerSelected(answeredYes, toldTruth) {
+      const answer = {
+        answer: answeredYes,
+        truth: toldTruth
+      };
+      this.sendMessage("question_answered", answer);
+      this.answers.push(answer);
+
       if (this.currentQuestion + 1 === this.questions.length) {
         this.stage = "QUESTIONS_ENDED";
       } else {
         this.currentQuestion += 1;
       }
-    },
-
-    lieSelected() {
-      this.sendMessage("lie_selected");
-      this.questionSkipped();
-    },
-
-    truthSelected() {
-      this.sendMessage("truth_selected");
-      this.questionSkipped();
     },
 
     addQuestion() {
@@ -199,7 +225,6 @@ export default {
 
     startGame() {
       // TODO: сделать валидацию вопросов
-      // TODO: сохранить вопросы в localStorage
       this.launch({ questions: this.questions });
       this.stage = "SHOWING_QUESTIONS";
     }
@@ -212,7 +237,13 @@ export default {
     },
 
     questions(newVal, oldVal) {
-      localStorage.questions = JSON.stringify(newVal);
+      localStorage.lieDetectorQuestions = JSON.stringify(newVal);
+    }
+  },
+
+  computed: {
+    showingLastResult() {
+      return this.currentAnswer + 1 === this.answers.length;
     }
   }
 };

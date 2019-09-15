@@ -12,8 +12,11 @@
     </div>
     <div v-if="stage === 'SHOWING_RESULTS'">
       <h1>«{{ args.questions[currentResult] }}»</h1>
-      <h2>{{ results[currentResult] ? 'Правда' : 'Ложь' }}</h2>
+      <h2>Ответ: «{{ results[currentResult].answer ? 'Да' : 'Нет' }}»</h2>
+      <h2>{{ results[currentResult].truth ? 'Правда' : 'Ложь' }}</h2>
     </div>
+
+    <div v-if="stage === 'GAME_ENDED'"></div>
   </div>
 </template>
 
@@ -36,12 +39,11 @@ export default {
       fingerPlaced: false,
       stage: "SHOWING_QUESTIONS",
       results: [],
-      currentResult: -1
+      currentResult: 0
     };
   },
   methods: {
     handleEvent(event, payload) {
-      console.log(event);
       if (event === "next_question_shown") {
         this.currentQuestion++;
       }
@@ -56,11 +58,16 @@ export default {
       }
       if (event === "questions_ended") {
         this.stage = "PROCESSING_RESULTS";
+        this.results = payload.results;
       }
       if (event === "next_answer_shown") {
-        this.stage = "SHOWING_RESULTS";
         this.currentResult++;
-        this.results.push(payload.answer);
+      }
+      if (event === "answers_ended") {
+        this.stage = "GAME_ENDED";
+      }
+      if (event === "started_showing_results") {
+        this.stage = "SHOWING_RESULTS";
       }
     },
     initHeartbeatDisplay() {
@@ -70,9 +77,9 @@ export default {
         lineWidth: 3
       });
       this.heartbeatDisplay.streamTo(canvas);
-    },
-    deviceConnected(deviceType, deviceName) {},
-    deviceDisconnected(deviceType, deviceName) {}
+    }
+    // deviceConnected(deviceType, deviceName) {},
+    // deviceDisconnected(deviceType, deviceName) {}
   },
   watch: {
     heartRate(newVal, oldVal) {
@@ -92,8 +99,8 @@ h4 {
   color: white;
 }
 .heartbeat-container {
-  width: 500px;
-  height: 160px;
+  width: 100vw;
+  height: 300px;
 }
 #heartbeat-canvas {
   width: 100%;
