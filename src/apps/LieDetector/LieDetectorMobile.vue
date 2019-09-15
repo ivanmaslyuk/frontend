@@ -9,7 +9,7 @@
         <img class="fingerprint" v-if="!isFingerPlaced" src="./img/fingerprint-red.svg" />
       </div>
       <div class="alert-wrapper"></div>
-      <input type="checkbox" @click="change" />
+      <!-- <input type="checkbox" @click="change" /> -->
     </div>
     <div v-if="questionsEnded">
       <span class="alert" style="padding: 0">ТЕСТИРОВАНИЕ ОКОНЧЕНО</span>

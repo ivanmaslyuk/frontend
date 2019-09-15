@@ -4,7 +4,7 @@
       <h1>«{{args.questions[currentQuestion]}}»</h1>
       <div class="heartbeat-container d-flex justify-content-center align-items-center">
         <canvas v-show="fingerPlaced" id="heartbeat-canvas"></canvas>
-        <h4 v-show="!fingerPlaced">Игрок убрал палец с экрана</h4>
+        <h4 v-show="!fingerPlaced">Нет данных</h4>
       </div>
     </div>
     <div v-if="stage === 'PROCESSING_RESULTS'">

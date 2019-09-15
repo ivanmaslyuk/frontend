@@ -56,7 +56,7 @@
             v-if="!fingerPlaced"
             style="height: 100%"
           >
-            <h4>Игрок убрал палец с экрана</h4>
+            <h4>Тестируемый убрал палец с экрана</h4>
           </div>
         </div>
       </div>
@@ -75,11 +75,14 @@
 
       <div class="row" style="margin-top: 30px">
         <div class="col-12">
-          <span class="text-secondary">Текущий вопрос:</span>
           <div class="d-flex justify-content-between">
-            <h2 style="display: inline-block">«{{ questions[currentQuestion] }}»</h2>
             <div>
-              <div class="btn-group answer-choices mr-2">
+              <span class="text-secondary">Текущий вопрос:</span>
+              <br />
+              <h2 style="display: inline-block">«{{ questions[currentQuestion] }}»</h2>
+            </div>
+            <div>
+              <div class="btn-group answer-choices mb-2">
                 <span>«Да»</span>
                 <button
                   class="btn btn-outline-success"
@@ -92,6 +95,7 @@
                   :disabled="!fingerPlaced"
                 >Ложь</button>
               </div>
+              <br />
               <div class="btn-group answer-choices">
                 <span>«Нет»</span>
                 <button
@@ -325,8 +329,11 @@ export default {
 .answer-choices > span {
   margin: 0 10px;
   align-self: center;
+  width: 50px;
+  text-align: center;
 }
-.btn-group .btn:not(:hover) {
+.btn-group .btn:not(:hover),
+.btn-group .btn:disabled {
   border-color: #eee;
   border-top-color: white;
   border-bottom-color: white;
