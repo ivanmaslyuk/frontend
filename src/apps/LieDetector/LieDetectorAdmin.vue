@@ -5,13 +5,23 @@
         <div class="mb-2">
           <span class="text-secondary">Введите несколько вопросов, чтобы начать</span>
         </div>
-        <div v-for="(question, questionIndex) in questions" v-bind:key="questionIndex">
+        <div class="mb-2">
+          <span class="text-danger" v-if="questioinsFormWarning">{{ questioinsFormWarning }}</span>
+        </div>
+        <div
+          class="input-group"
+          v-for="(question, questionIndex) in questions"
+          :key="questionIndex"
+        >
           <input
             class="form-control mb-2"
             type="text"
             placeholder="Введите вопрос"
             v-model.trim="questions[questionIndex]"
           />
+          <div class="input-group-append">
+            <button class="btn btn-link" @click="removeQuestion(questionIndex)">Удалить</button>
+          </div>
         </div>
 
         <div class="d-flex justify-content-between mt-2">
@@ -153,7 +163,8 @@ export default {
       stage: "ADDING_QUESTIONS",
       questions: JSON.parse(localStorage.lieDetectorQuestions || '[""]'),
       fingerPlaced: false,
-      answers: []
+      answers: [],
+      questioinsFormWarning: null
     };
   },
 
@@ -223,10 +234,27 @@ export default {
       this.questions.push("");
     },
 
+    removeQuestion(index) {
+      this.questions.splice(index, 1);
+    },
+
     startGame() {
-      // TODO: сделать валидацию вопросов
-      this.launch({ questions: this.questions });
-      this.stage = "SHOWING_QUESTIONS";
+      let valid = true;
+      for (const i in this.questions) {
+        const question = this.questions[i];
+        if (question.trim().length === 0) {
+          valid = false;
+          this.questioinsFormWarning = "Заполните пустые поля или удалите их";
+        }
+      }
+      if (this.questions.length === 0) {
+        valid = false;
+        this.questioinsFormWarning = "Добавьте хотя бы один вопрос";
+      }
+      if (valid) {
+        this.launch({ questions: this.questions });
+        this.stage = "SHOWING_QUESTIONS";
+      }
     }
   },
 
@@ -302,5 +330,11 @@ export default {
   border-color: #eee;
   border-top-color: white;
   border-bottom-color: white;
+}
+.input-group .btn {
+  height: 38px;
+}
+.input-group .form-control {
+  border-radius: 4px;
 }
 </style>
