@@ -1,7 +1,12 @@
 <template>
   <div class="bkg d-flex flex-column justify-content-center align-items-center">
     <div v-show="stage === 'SHOWING_QUESTIONS'">
-      <h1>«{{args.questions[currentQuestion]}}»</h1>
+      <!-- <div class="question-wrapper"> -->
+      <div class="question-background"></div>
+      <div class="question">
+        <span>«{{ args.questions[currentQuestion] }}»</span>
+      </div>
+      <!-- </div> -->
       <div class="heartbeat-container d-flex justify-content-center align-items-center">
         <canvas v-show="fingerPlaced" id="heartbeat-canvas"></canvas>
         <h4 v-show="!fingerPlaced">Нет данных</h4>
@@ -94,6 +99,7 @@ h4 {
   color: red;
 }
 .bkg {
+  position: relative;
   background: black;
   height: 100%;
   color: white;
@@ -105,5 +111,32 @@ h4 {
 #heartbeat-canvas {
   width: 100%;
   height: 100%;
+}
+/* .question-wrapper {
+  background-color: red;
+  filter: blur(100px);
+} */
+/* .question::before {
+  content: "";
+  position: absolute;
+
+  display: inline-block;
+  background-color: red;
+  top: 0;
+  left: 0;
+  /* box-shadow: 0 0 100px rgba(255, 0, 0); 
+  /* filter: ; 
+} */
+.question span {
+  font-size: 2.5rem;
+  position: relative;
+}
+.question::before {
+  position: absolute;
+  background: red;
+  -webkit-filter: blur(10px);
+  -moz-filter: blur(10px);
+  -ms-filter: blur(10px);
+  filter: blur(10px);
 }
 </style>
