@@ -22,9 +22,10 @@ export default {
   },
   methods: {
     performLogin(e) {
+      const basePath = this.backendBasePath();
       if (this.email && this.password) {
         axios
-          .post("http://127.0.0.1:8080/api/auth", {
+          .post(`${basePath}/api/auth`, {
             email: this.email,
             password: this.password
           })

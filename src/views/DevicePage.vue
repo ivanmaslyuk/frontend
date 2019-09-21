@@ -48,12 +48,20 @@
       <span class="secondary-text">Не удается установить соединение с сервером.</span>
     </div>
 
-    <div v-if="currentApp && !isProjector && !sessionTerminated  && !errorAccured && !loading">
+    <div
+      v-if="currentApp && !isProjector && !sessionTerminated  && !errorAccured && !loading"
+      class="wrapper"
+    >
       <TestAppMobile v-if="currentApp === 'test_app'" />
+      <LieDetectorMobile v-if="currentApp === 'lie_detector'" />
     </div>
 
-    <div v-if="currentApp && isProjector && !sessionTerminated && !errorAccured && !loading">
+    <div
+      v-if="currentApp && isProjector && !sessionTerminated && !errorAccured && !loading"
+      class="wrapper"
+    >
       <TestAppProjector v-if="currentApp === 'test_app'" />
+      <LieDetectorProjector :args="args" v-if="currentApp === 'lie_detector'" />
     </div>
   </div>
 </template>
@@ -64,7 +72,11 @@ export default {
   props: { isProjector: false },
   components: {
     TestAppMobile: () => import("../apps/TestApp/TestAppMobile"),
-    TestAppProjector: () => import("../apps/TestApp/TestAppProjector")
+    TestAppProjector: () => import("../apps/TestApp/TestAppProjector"),
+
+    LieDetectorMobile: () => import("../apps/LieDetector/LieDetectorMobile"),
+    LieDetectorProjector: () =>
+      import("../apps/LieDetector/LieDetectorProjector")
   },
   data() {
     return {
@@ -75,7 +87,8 @@ export default {
       sessionId: null,
       invalidSessionIdEntered: false,
       currentApp: null,
-      deviceName: null
+      deviceName: null,
+      args: {}
     };
   },
   mounted() {
@@ -102,10 +115,12 @@ export default {
       e.preventDefault();
     },
     handleMessage(message) {
-      console.log(message.event);
       if (message.source === "system") {
         if (message.event === "app_launched") {
           this.currentApp = message.payload.name;
+          if (message.payload) {
+            this.args = message.payload.args || {};
+          }
         }
 
         if (message.event === "current_app_closed") {
@@ -176,5 +191,10 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+.wrapper {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
 }
 </style>
