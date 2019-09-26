@@ -1,5 +1,33 @@
 function getDeviceModel() {
-  return "Mobile Device";
+
+  var browserName = "Mobile Device",
+      deviceName = "Desktop",
+      nUA = navigator.userAgent,
+      fullName;
+
+  if (nUA.search(/Safari/) != -1) {browserName = 'Safari'};
+  if (nUA.search(/Firefox/) != -1) {browserName = 'MozillaFirefox'};
+  if (nUA.search(/MSIE/) != -1 || nUA.search(/NET CLR /) != -1) {browserName = 'Internet Explorer'};
+  if (nUA.search(/Chrome/) != -1) {browserName = 'Google Chrome'};
+  if (nUA.search(/YaBrowser/) != -1) {browserName = 'Яндекс браузер'};
+  if (nUA.search(/OPR/) != -1) {browserName = 'Opera'};
+  if (nUA.search(/Konqueror/) != -1) {browserName = 'Konqueror'};
+  if (nUA.search(/Iceweasel/) != -1) {browserName = 'Debian Iceweasel'};
+  if (nUA.search(/SeaMonkey/) != -1) {browserName = 'SeaMonkey'};
+  if (nUA.search(/Edge/) != -1) {browserName = 'Microsoft Edge'};
+
+  if (nUA.search(/Android/) != -1) {deviceName = 'Android'};
+  if (nUA.search(/webOS/) != -1) {deviceName = 'webOS'};
+  if (nUA.search(/iPhone/) != -1) {deviceName = 'iPhone'};
+  if (nUA.search(/iPad/) != -1) {deviceName = 'iPad'};
+  if (nUA.search(/iPod/) != -1) {deviceName = 'iPod'};
+  if (nUA.search(/BlackBerry/) != -1) {deviceName = 'BlackBerry'};
+  if (nUA.search(/IEMobile/) != -1) {deviceName = 'IEMobile'};
+  if (nUA.search(/Opera Mini/) != -1) {deviceName = 'Opera Mini'};
+
+  fullName = browserName + ' ' +  deviceName;
+
+  return '' + fullName;
 }
 
 /******************************* PRIVATE MEMBERS *******************************/

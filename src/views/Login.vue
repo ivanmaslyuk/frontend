@@ -1,6 +1,6 @@
 <template>
   <form @submit="performLogin">
-    <input type="email" v-model="email" name="email" placeholder="email" />
+    <input type="text" v-model="email" name="email" placeholder="email" />
     <br />
     <input type="password" v-model="password" name="password" placeholder="пароль" />
     <br />
