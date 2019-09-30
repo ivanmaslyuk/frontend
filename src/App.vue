@@ -13,7 +13,7 @@ export default {
   computed: {
     notOnMobilePage() {
       return (
-        !["mobile", "projector"].includes(this.$route.name) &&
+        !["login", "mobile", "projector"].includes(this.$route.name) &&
         this.$route.name != null
       );
     }
