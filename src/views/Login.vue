@@ -15,7 +15,7 @@
                 required 
             >
             <input 
-                class="form-control form-input" 
+                class="form-control form-input mt-1" 
                 v-model="password" 
                 name="password"
                 type="password" 
