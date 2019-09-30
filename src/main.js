@@ -6,6 +6,7 @@ import SyncSerciceFrontend from "../js/SyncServiceFrontend";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import { ToastPlugin } from "bootstrap-vue";
+import config from "./config";
 Vue.use(ToastPlugin);
 
 Vue.config.productionTip = false;
@@ -13,20 +14,16 @@ Vue.config.productionTip = false;
 Vue.mixin({
   data() {
     return {
-      backendHost: "192.168.2.45:8080",
-      wsPort: 3001,
-      backendScheme: "http"
+      backendHost: config.backendHost
     };
-  },
-  methods: {
-    backendBasePath() {
-      return `${this.backendScheme}://${this.backendHost}`;
-    }
   },
   computed: {
     $syncService() {
       if (!window.syncService) {
-        window.syncService = new SyncSerciceFrontend("192.168.2.45", 3001);
+        window.syncService = new SyncSerciceFrontend(
+          config.wsHost,
+          config.wsPort
+        );
       }
       return window.syncService;
     }

@@ -35,7 +35,7 @@ export default {
     }
 
     try {
-      const basePath = this.backendBasePath();
+      const basePath = this.backendHost;
       const response = await axios.get(`${basePath}/api/apps`);
       this.apps = response.data;
     } catch (err) {

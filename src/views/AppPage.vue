@@ -29,7 +29,7 @@ export default {
       router.replace({ name: "home" });
     }
     try {
-      const basePath = this.backendBasePath();
+      const basePath = this.backendHost;
       const response = await axios.get(`${basePath}/api/apps/${this.id}`);
       this.appInfo = response.data;
     } catch (err) {

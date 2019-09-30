@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     performLogin(e) {
-      const basePath = this.backendBasePath();
+      const basePath = this.backendHost;
       if (this.email && this.password) {
         axios
           .post(`${basePath}/api/auth`, {
