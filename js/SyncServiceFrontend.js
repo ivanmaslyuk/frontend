@@ -1,9 +1,7 @@
 function getDeviceModel() {
 
-  var browserName = "Mobile Device",
-      deviceName = "Desktop",
-      nUA = navigator.userAgent,
-      fullName;
+  let browserName = "Browser",
+      nUA = navigator.userAgent;
 
   if (nUA.search(/Safari/) != -1) {browserName = 'Safari'};
   if (nUA.search(/Firefox/) != -1) {browserName = 'MozillaFirefox'};
@@ -16,18 +14,10 @@ function getDeviceModel() {
   if (nUA.search(/SeaMonkey/) != -1) {browserName = 'SeaMonkey'};
   if (nUA.search(/Edge/) != -1) {browserName = 'Microsoft Edge'};
 
-  if (nUA.search(/Android/) != -1) {deviceName = 'Android'};
-  if (nUA.search(/webOS/) != -1) {deviceName = 'webOS'};
-  if (nUA.search(/iPhone/) != -1) {deviceName = 'iPhone'};
-  if (nUA.search(/iPad/) != -1) {deviceName = 'iPad'};
-  if (nUA.search(/iPod/) != -1) {deviceName = 'iPod'};
-  if (nUA.search(/BlackBerry/) != -1) {deviceName = 'BlackBerry'};
-  if (nUA.search(/IEMobile/) != -1) {deviceName = 'IEMobile'};
-  if (nUA.search(/Opera Mini/) != -1) {deviceName = 'Opera Mini'};
+  let platform = window.navigator.platform;
+  platform == ('Win32' || 'Win64' || 'Windows' || 'WinCE') ? platform = "Desktop " + platform : platform;
 
-  fullName = browserName + ' ' +  deviceName;
-
-  return '' + fullName;
+  return (platform == null) ? browserName : platform;
 }
 
 /******************************* PRIVATE MEMBERS *******************************/
